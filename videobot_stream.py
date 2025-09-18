@@ -2,7 +2,7 @@
 
 import streamlit as st
 import json
-from streamlit_copy_to_clipboard import copy_to_clipboard
+from st_copy_to_clipboard import st_copy_to_clipboard
 
 # --- Page Config ---
 st.set_page_config(
@@ -160,7 +160,7 @@ with col1:
         st.session_state.generated_prompt = generate_prompt_from_state()
 
 with col2:
-    copy_to_clipboard(st.session_state.get("generated_prompt", ""), "📋 Copy")
+    st_copy_to_clipboard(st.session_state.get("generated_prompt", ""), button_text="📋 Copy", key="clipboard")
 
 with col3:
     st.download_button(
