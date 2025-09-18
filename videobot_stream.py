@@ -148,7 +148,7 @@ with tab4:
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col1:
-    if st.button("✨ Generate Prompt", use_container_width=True):
+    if st.button("✨ Compile Data", use_container_width=True):
         st.session_state.generated_prompt = generate_prompt_from_state()
 
 with col2:
@@ -185,5 +185,5 @@ with col6:
 
 # --- Output Section ---
 st.markdown("---")
-st.header("Generated Prompt:")
+st.header("Collected Data: Copy the below data and paste into your AI Generator")
 st.text_area("Output", value=st.session_state.get("generated_prompt", ""), height=300, disabled=True, label_visibility="collapsed")
