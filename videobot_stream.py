@@ -1,11 +1,12 @@
-# ---------- Streamlit Video Prompt Compiler ----------
+# ---------- Streamlit Video Prompt Generator ----------
 
 import streamlit as st
 import json
+from streamlit_copy_to_clipboard import copy_to_clipboard
 
 # --- Page Config ---
 st.set_page_config(
-    page_title="AI Prompt Compiler",
+    page_title="AI Prompt Generator",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -60,15 +61,21 @@ def generate_prompt_from_state():
 
 def clear_all_fields():
     """Clears all input fields by setting their session state values to empty strings."""
-    for key in st.session_state.keys():
+    # A list of keys to preserve
+    preserve_keys = ['generated_prompt']
+
+    keys_to_clear = [key for key in st.session_state.keys() if key not in preserve_keys]
+
+    for key in keys_to_clear:
         st.session_state[key] = ""
-    # Update the prompt output to be empty
+
     st.session_state.generated_prompt = ""
     st.experimental_rerun()
 
+
 def save_preset():
     """Saves the current inputs to a JSON string."""
-    preset_data = {key: st.session_state.get(key, "") for key in st.session_state.keys()}
+    preset_data = {key: st.session_state.get(key, "") for key in st.session_state.keys() if key != 'generated_prompt'}
     return json.dumps(preset_data, indent=4)
 
 def load_preset(uploaded_file):
@@ -86,7 +93,7 @@ def load_preset(uploaded_file):
 
 # --- UI Layout ---
 
-st.title("AI Prompt Compiler")
+st.title("AI Prompt Generator")
 
 tab1, tab2, tab3, tab4 = st.tabs(["Scene & Style", "Subject & Character", "Camera & Lens", "Post-Processing"])
 
@@ -148,17 +155,15 @@ with tab4:
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col1:
-    if st.button("✨ Compile Data", use_container_width=True):
+    if st.button("✨ Generate Prompt", use_container_width=True):
         st.session_state.generated_prompt = generate_prompt_from_state()
 
 with col2:
-    if st.button("📋 Copy to Clipboard", use_container_width=True):
-        st.session_state.copy_text = st.session_state.get("generated_prompt", "")
-        st.toast('Copied to clipboard!', icon='📋')
+    copy_to_clipboard(st.session_state.get("generated_prompt", ""), "📋 Copy")
 
 with col3:
     st.download_button(
-        label="💾 Save as a json File",
+        label="💾 Save",
         data=save_preset(),
         file_name="prompt_preset.json",
         mime="application/json",
@@ -172,7 +177,7 @@ with col4:
 
 with col5:
     st.download_button(
-        label="📄 Export to Plain Text",
+        label="📄 Export",
         data=st.session_state.get("generated_prompt", ""),
         file_name="prompt.txt",
         mime="text/plain",
@@ -185,5 +190,5 @@ with col6:
 
 # --- Output Section ---
 st.markdown("---")
-st.header("Compiled Data")
+st.header("Generated Prompt:")
 st.text_area("Output", value=st.session_state.get("generated_prompt", ""), height=300, disabled=True, label_visibility="collapsed")
