@@ -13,6 +13,7 @@ st.set_page_config(
 
 # --- Define Presets and Options ---
 DIRECTOR_OPTIONS = [
+    "",  # Placeholder for empty default selection
     "Steven Spielberg & Bill Butler (Jaws)",
     "Steven Spielberg & Janusz Kamiński (Saving Private Ryan)",
     "Christopher Nolan & Wally Pfister (The Dark Knight Trilogy, Inception)",
