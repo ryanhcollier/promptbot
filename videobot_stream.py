@@ -160,7 +160,7 @@ with col1:
         st.session_state.generated_prompt = generate_prompt_from_state()
 
 with col2:
-    st_copy_to_clipboard(st.session_state.get("generated_prompt", ""), button_text="📋 Copy", key="clipboard")
+    st_copy_to_clipboard(st.session_state.get("generated_prompt", ""))
 
 with col3:
     st.download_button(
